@@ -70,13 +70,13 @@ export function saveHabits(habits: Habit[]): void {
 
 export function addHabit(habit: Habit): void {
     const habits = getHabits() || [];
-    safeSet<Habit[]>(STORAGE_KEY.HABITS, [...habits, habit]);
+    saveHabits([...habits, habit]);
 }
 
 export function updateHabit(updatedHabit: Habit): void {
     const habits = getHabits() || [];
     const newHabits = habits.map(h => h.id === updatedHabit.id ? updatedHabit : h);
-    safeSet<Habit[]>(STORAGE_KEY.HABITS, newHabits);
+    saveHabits(newHabits);
 }
 
 export function deleteHabit(habitId: string): void {
@@ -84,4 +84,3 @@ export function deleteHabit(habitId: string): void {
     const newHabits = habits.filter(h => h.id !== habitId);
     saveHabits(newHabits);
 }
-
