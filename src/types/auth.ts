@@ -2,7 +2,7 @@ export type User = {
     id: string;
     email: string;
     password: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 export type Session = {
