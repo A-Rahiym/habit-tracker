@@ -64,6 +64,10 @@ export function getHabits(): Habit[] | null {
     return safeGet<Habit[]>(STORAGE_KEY.HABITS);
 }
 
+export function saveHabits(habits: Habit[]): void {
+    safeSet<Habit[]>(STORAGE_KEY.HABITS, habits);
+}
+
 export function addHabit(habit: Habit): void {
     const habits = getHabits() || [];
     safeSet<Habit[]>(STORAGE_KEY.HABITS, [...habits, habit]);
@@ -78,6 +82,6 @@ export function updateHabit(updatedHabit: Habit): void {
 export function deleteHabit(habitId: string): void {
     const habits = getHabits() || [];
     const newHabits = habits.filter(h => h.id !== habitId);
-    safeSet<Habit[]>(STORAGE_KEY.HABITS, newHabits);
+    saveHabits(newHabits);
 }
 
