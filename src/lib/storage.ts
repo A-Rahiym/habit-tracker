@@ -1,11 +1,8 @@
+import { STORAGE_KEY } from "./constants";
 import { Habit } from "../types/habit";
 import  {User , Session} from "../types/auth";
 
-const STORAGE_KEY = {
-    USERS:'habit-tracker-users',
-    SESSIONS:'habit-tracker-sessions',
-    HABITS:'habit-tracker-habits',
-}
+
 
 
 
