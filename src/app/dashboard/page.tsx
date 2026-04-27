@@ -147,7 +147,6 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-4 xl:flex-row xl:items-start">
             <div className="xl:flex-1">
               <div className="flex items-center justify-between mb-3">
-                <div className="font-semibold">Habits</div>
                 <button
                   data-testid="create-habit-button"
                   onClick={openCreate}

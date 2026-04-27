@@ -28,18 +28,21 @@ export function HabitList({
   }
 
   return (
-    <div className="space-y-2">
-      {habits.map((h) => (
-        <HabitCard
-          key={h.id}
-          habit={h}
-          today={today}
-          onToggle={onToggle}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ))}
-    </div>
+    <>
+      <div className="font-semibold">Habits</div>
+      <div className="space-y-2">
+        {habits.map((h) => (
+          <HabitCard
+            key={h.id}
+            habit={h}
+            today={today}
+            onToggle={onToggle}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 
