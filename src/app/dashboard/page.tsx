@@ -7,6 +7,7 @@ import { getCurrentUser, logout as authLogout } from "@/src/lib/auth";
 
 import { Habit } from "@/src/types/habit";
 import { toggleHabitCompletion } from "@/src/lib/habit";
+import { calculateCurrentStreak } from "@/src/lib/streak";
 import { ProtectedRoute } from "@/src/components/shared/ProtectedRoute";
 import { HabitList } from "@/src/components/habits/HabitList";
 import { HabitForm } from "@/src/components/habits/HabitForm";
@@ -16,10 +17,15 @@ export default function DashboardPage() {
 
   const [habits, setHabits] = useState<Habit[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Habit | null>(null);
 
   const today = new Date().toISOString().slice(0, 10);
+  const totalStreak = habits.reduce(
+    (sum, habit) => sum + calculateCurrentStreak(habit.completions, today),
+    0
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +35,7 @@ export default function DashboardPage() {
       if (!user) return;
 
       setUserId(user.id);
+      setUserEmail(user.email);
       seedHabits(user.id);
 
       const all = getHabits();
@@ -111,22 +118,25 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <div data-testid="dashboard-page" className="min-h-screen bg-background text-text-primary px-4 py-6 md:px-8 md:py-8">
-        <div className="w-full mx-auto max-w-[720px] xl:max-w-[1040px]">
-          <div className="flex items-start justify-between mb-5">
-            <div>
-              <div className="text-2xl font-semibold tracking-tight">
-                Your Dashboard
+        <div className="w-full mx-auto max-w-180 xl:max-w-260">
+          <div className="rounded-3xl border border-primary/20 bg-primary px-5 py-5 md:px-6 md:py-6 shadow-sm mb-5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-white">
+                  Hello 👋
+                </div>
+                <div className="mt-1 text-2xl font-semibold tracking-tight text-white truncate">
+                Welcome back
+                </div>
+                <div className="mt-2 text-sm text-white max-w-md italic">
+                  A calm space for today’s habits. Keep the streak alive, one tap at a time.
+                </div>
               </div>
-              <div className="text-sm text-text-secondary mt-1">
-                Here’s your progress so far. Keep the momentum going.
-              </div>
-            </div>
 
-            <div className="flex items-center gap-2">
               <button
                 data-testid="auth-logout-button"
                 onClick={logout}
-                className="w-auto px-3 py-2 rounded-full border border-border bg-surface text-danger hover:bg-muted-surface transition"
+                className="shrink-0 px-3 py-2 rounded-full border border-border bg-surface text-danger hover:bg-muted-surface transition"
                 type="button"
               >
                 Logout
@@ -145,7 +155,7 @@ export default function DashboardPage() {
                   aria-label="Create habit"
                   className={[
                     "fixed bottom-6 right-6 w-12 h-12 rounded-full bg-primary text-white shadow-md flex items-center justify-center",
-                    "md:static md:bottom-auto md:right-auto md:w-auto md:h-auto md:rounded-xl md:px-4 md:py-2 md:shadow-sm",
+                    "md:static md:bottom-auto md:right-auto md:w-auto md:h-auto md:rounded-full md:px-4 md:py-2 md:shadow-sm",
                     "hover:opacity-95 active:opacity-90 transition",
                   ].join(" ")}
                 >
@@ -178,15 +188,30 @@ export default function DashboardPage() {
               />
             </div>
 
-            <div className="xl:w-[360px]">
-              <div className="rounded-2xl bg-surface border border-border p-5 shadow-sm">
-                <div className="font-semibold mb-1">Summary</div>
-                <div className="text-sm text-text-secondary">
-                  {habits.length} habit{habits.length === 1 ? "" : "s"} total
+            <div className="xl:w-90">
+              <div className="rounded-2xl bg-surface border border-border p-5 shadow-sm space-y-4">
+                <div>
+                  <div className="text-sm font-medium text-text-secondary">
+                    Total streak 🔥
+                  </div>
+                  <div className="mt-1 text-3xl font-semibold tracking-tight">
+                    {totalStreak}
+                  </div>
+                  <div className="mt-1 text-sm text-text-secondary">
+                    Combined streak across all habits.
+                  </div>
                 </div>
-                <div className="h-px bg-border my-4" />
-                <div className="text-sm text-text-secondary">
-                  Tap the circle to mark today complete.
+
+                <div className="h-px bg-border" />
+
+                <div>
+                  <div className="font-semibold mb-1">Summary</div>
+                  <div className="text-sm text-text-secondary">
+                    {habits.length} habit{habits.length === 1 ? "" : "s"} total
+                  </div>
+                  <div className="mt-3 text-sm text-text-secondary">
+                    Tap the circle to mark today complete.
+                  </div>
                 </div>
               </div>
             </div>
