@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getHabits, saveHabits, seedHabits , updateHabit , deleteHabit, addHabit} from "@/src/lib/storage";
+import { getHabits, saveHabits, seedHabits, updateHabit, deleteHabit, addHabit } from "@/src/lib/storage";
 import { getCurrentUser, logout as authLogout } from "@/src/lib/auth";
 
 import { Habit } from "@/src/types/habit";
@@ -126,7 +126,7 @@ export default function DashboardPage() {
                   Hello 👋
                 </div>
                 <div className="mt-1 text-2xl font-semibold tracking-tight text-white truncate">
-                Welcome back
+                  Welcome back
                 </div>
                 <div className="mt-2 text-sm text-white max-w-md italic">
                   A calm space for today’s habits. Keep the streak alive, one tap at a time.
@@ -152,17 +152,21 @@ export default function DashboardPage() {
                   onClick={openCreate}
                   type="button"
                   aria-label="Create habit"
-                  className={[
-                    "fixed bottom-6 right-6 w-12 h-12 rounded-full bg-primary text-white shadow-md flex items-center justify-center",
-                    "md:static md:bottom-auto md:right-auto md:w-auto md:h-auto md:rounded-full md:px-4 md:py-2 md:shadow-sm",
-                    "hover:opacity-95 active:opacity-90 transition",
-                  ].join(" ")}
-                >
-                  <span className="hidden md:inline">Add</span>
+                  className="
+                  fixed bottom-6 left-1/2 -translate-x-1/2
+                  w-14 h-14 rounded-full bg-primary text-white shadow-lg
+                  flex items-center justify-center
+                  hover:opacity-95 active:opacity-90 transition
+
+                  xl:static xl:translate-x-0
+                  xl:w-auto xl:h-auto xl:px-4 xl:py-2
+                  xl:rounded-full xl:shadow-sm
+                  xl:flex xl:gap-2 xl:items-center
+                ">
                   <svg
-                    className="md:hidden"
-                    width="22"
-                    height="22"
+                    className="xl:hidden"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +175,30 @@ export default function DashboardPage() {
                     <path
                       d="M12 5V19M5 12H19"
                       stroke="currentColor"
-                      strokeWidth="2.4"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+
+                  {/* Desktop label */}
+                  <span className="hidden xl:inline text-sm font-medium">
+                    Add
+                  </span>
+
+
+                  <svg
+                    className="hidden xl:block"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 5V19M5 12H19"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                     />
                   </svg>
