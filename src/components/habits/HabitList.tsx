@@ -29,7 +29,7 @@ export function HabitList({
 
   return (
     <>
-      <div className="font-semibold">Habits</div>
+      <div className="font-semibold text-2xl m-3">Habits</div>
       <div className="space-y-2">
         {habits.map((h) => (
           <HabitCard
