@@ -38,24 +38,36 @@ export function LoginForm() {
           </div>
 
           <form onSubmit={onSubmit} className="space-y-3">
-            <input
-              data-testid="auth-login-email"
-              className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
-              type="email"
-              placeholder="Email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              data-testid="auth-login-password"
-              className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
-              type="password"
-              placeholder="Password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="space-y-1">
+              <label htmlFor="auth-login-email" className="text-sm font-medium text-text-primary">
+                Email
+              </label>
+              <input
+                id="auth-login-email"
+                data-testid="auth-login-email"
+                className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
+                type="email"
+                placeholder="Email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="auth-login-password" className="text-sm font-medium text-text-primary">
+                Password
+              </label>
+              <input
+                id="auth-login-password"
+                data-testid="auth-login-password"
+                className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
+                type="password"
+                placeholder="Password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
             {error && (
               <div className="text-sm text-danger">
