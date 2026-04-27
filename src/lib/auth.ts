@@ -4,7 +4,7 @@ import {
   clearSession,
   getSession,
   getUsers,
-  saveSession,
+  setSession,
 } from "@/src/lib/storage";
 
 type SignupInput = {
@@ -26,7 +26,7 @@ export async function signup(input: SignupInput): Promise<User> {
   };
 
   addUser(user);
-  saveSession({ userId: user.id, email: user.email });
+  setSession({ userId: user.id, email: user.email });
   return user;
 }
 
@@ -40,7 +40,7 @@ export async function login(email: string, password: string): Promise<User> {
     throw new Error("Invalid email or password");
   }
 
-  saveSession({ userId: user.id, email: user.email });
+  setSession({ userId: user.id, email: user.email });
   return user;
 }
 
@@ -49,7 +49,9 @@ export async function logout(): Promise<void> {
 }
 
 export async function getCurrentUser(): Promise<User | null> {
+  console.log("Getting current user...");
   const session = getSession();
+  console.log("Current session:", session);
   if (!session) return null;
   const user = getUsers().find((u) => u.id === session.userId);
   return user || null;

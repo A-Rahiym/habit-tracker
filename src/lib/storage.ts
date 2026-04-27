@@ -35,7 +35,7 @@ export function addUser (User: User): void {
     const users = getUsers();
     const UserExists = users.some(u => u.email === User.email);
     if (UserExists) {
-        throw new Error('User with this email already exists');
+        throw new Error('User already exists');
     }
     safeSet<User[]>(STORAGE_KEY.USERS, [...users, User]);
 }
@@ -48,7 +48,7 @@ export function getSession(): Session | null {
     return safeGet<Session>(STORAGE_KEY.SESSIONS);
 }
 
-export function saveSession(session: Session): void {
+export function setSession(session: Session): void {
     safeSet<Session>(STORAGE_KEY.SESSIONS, session);
 }
 
