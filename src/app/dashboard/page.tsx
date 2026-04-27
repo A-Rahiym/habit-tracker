@@ -6,8 +6,8 @@ import { getHabits, saveHabits, seedHabits, updateHabit, deleteHabit, addHabit }
 import { getCurrentUser, logout as authLogout } from "@/src/lib/auth";
 
 import { Habit } from "@/src/types/habit";
-import { toggleHabitCompletion } from "@/src/lib/habit";
-import { calculateCurrentStreak } from "@/src/lib/streak";
+import { toggleHabitCompletion } from "@/src/lib/habits";
+import { calculateCurrentStreak } from "@/src/lib/streaks";
 import { ProtectedRoute } from "@/src/components/shared/ProtectedRoute";
 import { HabitList } from "@/src/components/habits/HabitList";
 import { HabitForm } from "@/src/components/habits/HabitForm";

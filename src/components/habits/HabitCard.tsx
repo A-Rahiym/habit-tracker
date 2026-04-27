@@ -2,7 +2,7 @@
 
 import type { Habit } from "@/src/types/habit";
 import { getHabitSlug } from "@/src/lib/slug";
-import { calculateCurrentStreak } from "@/src/lib/streak";
+import { calculateCurrentStreak } from "@/src/lib/streaks";
 
 export function HabitCard({
   habit,
