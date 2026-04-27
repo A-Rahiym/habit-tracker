@@ -2,29 +2,24 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSession } from "@/src/lib/storage";
+import { getCurrentUser } from "@/src/lib/auth";
+import { SplashScreen } from "@/src/components/shared/SplashScreen";
 
 export default function SplashPage() {
 const router = useRouter();
 
 useEffect(() => {
-    const timer = setTimeout(() => {
-        const session = getSession();
-        if (session) {
-            router.push('/dashboard');
-        } else {
-            router.push('/signup');
-        }
-    }, 2000);
+  let cancelled = false;
+  const timer = setTimeout(async () => {
+    const user = await getCurrentUser();
+    if (cancelled) return;
+    router.replace(user ? "/dashboard" : "/login");
+  }, 600);
 
-    return () => clearTimeout(timer);
-
-
+  return () => {
+    cancelled = true;
+    clearTimeout(timer);
+  };
 }, [router]);
-
-return (
-    <div className="flex items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold">Habit Tracker</h1>
-    </div>
-);
+  return <SplashScreen />;
 }
