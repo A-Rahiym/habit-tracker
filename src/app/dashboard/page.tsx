@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getHabits, saveHabits, seedHabits, updateHabit, deleteHabit, addHabit } from "@/src/lib/storage";
+import { getHabits, saveHabits,  updateHabit, deleteHabit, addHabit } from "@/src/lib/storage";
 import { getCurrentUser, logout as authLogout } from "@/src/lib/auth";
 
 import { Habit } from "@/src/types/habit";
@@ -36,7 +36,7 @@ export default function DashboardPage() {
 
       setUserId(user.id);
       setUserEmail(user.email);
-      seedHabits(user.id);
+   
 
       const all = getHabits();
       const userHabits = all?.filter((h) => h.userId === user.id) || [];

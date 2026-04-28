@@ -87,34 +87,34 @@ export function deleteHabit(habitId: string): void {
 
 
 
-export function seedHabits(userId: string) {
-  const existing = getHabits() || [];
+// export function seedHabits(userId: string) {
+//   const existing = getHabits() || [];
 
-  const userHabits = existing.filter(h => h.userId === userId);
-  if (userHabits.length > 0) return;
+//   const userHabits = existing.filter(h => h.userId === userId);
+//   if (userHabits.length > 0) return;
 
-  const today = new Date().toISOString().slice(0, 10);
+//   const today = new Date().toISOString().slice(0, 10);
 
-  const mock = [
-    {
-      id: crypto.randomUUID(),
-      userId,
-      name: 'Drink Water',
-      description: '',
-      frequency: 'daily',
-      createdAt: new Date().toISOString(),
-      completions: [today],
-    },
-    {
-      id: crypto.randomUUID(),
-      userId,
-      name: 'Read Book',
-      description: '',
-      frequency: 'daily',
-      createdAt: new Date().toISOString(),
-      completions: [],
-    },
-  ];
+//   const mock = [
+//     {
+//       id: crypto.randomUUID(),
+//       userId,
+//       name: 'Drink Water',
+//       description: '',
+//       frequency: "daily",
+//       createdAt: new Date().toISOString(),
+//       completions: [today],
+//     },
+//     {
+//       id: crypto.randomUUID(),
+//       userId,
+//       name: 'Read Book',
+//       description: '',
+//       frequency: "daily",
+//       createdAt: new Date().toISOString(),
+//       completions: [],
+//     },
+//   ];
 
-  saveHabits([...existing, ...mock]); 
-}
+//   saveHabits([...existing, ...mock]); 
+// }
