@@ -10,8 +10,8 @@ const leagueSpartan = League_Spartan({
 });
 
 export const metadata: Metadata = {
-  title: "TaskMaster - Your Personal Habit Tracker",
-  description: "TaskMaster is a simple and intuitive habit tracker designed to help you build and maintain positive habits. With a clean interface and powerful features, TaskMaster makes it easy to stay consistent and motivated on your journey to self-improvement.",
+  title: "Habit Tracker - Your Personal Habit Tracker",
+  description: "Habit Tracker is a simple and intuitive habit tracker designed to help you build and maintain positive habits. With a clean interface and powerful features, Habit Tracker makes it easy to stay consistent and motivated on your journey to self-improvement.",
   manifest: "/manifest.json"
 };
 

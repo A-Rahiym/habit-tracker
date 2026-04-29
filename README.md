@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Overview
+A mobile-first Habit Tracker Progressive Web App that lets users sign up,
+log in, create habits, mark them complete daily, track streaks, and install
+the app on their device. All data is stored locally in localStorage — no
+backend or database involved.
 
-## Getting Started
+Stack: Next.js App Router, React, TypeScript, Tailwind CSS, localStorage,
+Playwright, Vitest, React Testing Library. Hosted on Netlify.
 
-First, run the development server:
+## Setup Instructions
+- Prerequisites: Node.js 18+, npm
+- Clone the repo
+
+```bash
+npm install
+```
+
+## Run Instructions
+- Development:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Note: service worker only registers in production, not in development
 
-## Learn More
+## Test Instructions
+- All tests:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm test
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Unit only:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run test:unit
+```
 
-## Deploy on Vercel
+- Integration only:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run test:integration
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- E2E only:
+
+```bash
+npm run test:e2e
+```
+
+- Note: requires dev server running on localhost:3000
+
+## Local Persistence Structure
+localStorage uses three keys:
+- `habit-tracker-users`: array of {id, email, password, createdAt}
+- `habit-tracker-sessions`: {userId, email} or null
+- `habit-tracker-habits`: array of {id, userId, name, description, frequency, createdAt, completions}
+completions is an array of YYYY-MM-DD strings — one per day completed.
+Habits are filtered by userId so each user only sees their own data.
+
+## PWA Support
+- `public/manifest.json` defines name, icons, theme color, display mode
+- `public/sw.js` is the service worker, registered only in production
+- Navigation requests: network-first, falls back to cached shell offline
+- Static assets (JS, CSS, images): cache-first
+- `public/icons/icon-192.png` and `public/icons/icon-512.png` are cached on first request through the static-asset path
+
+## Trade-offs and Limitations
+- Passwords stored as plain text in localStorage — no hashing
+- No server-side auth — data is readable via DevTools
+- localStorage is device-specific — no cross-device sync
+- ~5MB storage limit
+- Offline support not testable in development — SW only active in production
+
+## Test File Map
+| Test File | Type | Behavior Verified |
+| --- | --- | --- |
+| `test/unit/slug.test.ts` | Unit | getHabitSlug slug generation |
+| `test/unit/validator.test.ts` | Unit | validateHabitName rules |
+| `test/unit/streaks.test.ts` | Unit | calculateCurrentStreak logic |
+| `test/unit/habit.test.ts` | Unit | toggleHabitCompletion immutability and correctness |
+| `test/integration/auth-flow.test.tsx` | Integration | Signup, login, duplicate and invalid credential errors |
+| `test/integration/habit-form.test.tsx` | Integration | Create, edit, delete confirmation, toggle completion, streak update |
+| `test/e2e/app.spec.ts` | E2E | Not currently checked in; Playwright dependency is installed but no e2e spec is present in the repo |

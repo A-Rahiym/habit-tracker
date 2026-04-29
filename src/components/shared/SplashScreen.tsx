@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 export function SplashScreen() {
   return (
@@ -6,7 +7,13 @@ export function SplashScreen() {
     data-testid="splash-screen"
     >
       <div className="text-center space-y-3">
-
+        <Image
+          src="/logo.png"
+          alt="Habit Tracker Logo"
+          width={64}
+          height={64}
+          className="mx-auto"
+        />
         <div className="text-2xl font-semibold tracking-tight">
           Habit Tracker
         </div>

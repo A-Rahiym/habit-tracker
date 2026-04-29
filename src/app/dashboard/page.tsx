@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getHabits, saveHabits,  updateHabit, deleteHabit, addHabit } from "@/src/lib/storage";
+import { getHabits, saveHabits, updateHabit, deleteHabit, addHabit } from "@/src/lib/storage";
 import { getCurrentUser, logout as authLogout } from "@/src/lib/auth";
-
+import { AddIcon } from "@/src/components/Icons/Add";
 import { Habit } from "@/src/types/habit";
 import { toggleHabitCompletion } from "@/src/lib/habits";
 import { calculateCurrentStreak } from "@/src/lib/streaks";
@@ -30,13 +30,13 @@ export default function DashboardPage() {
   useEffect(() => {
     let cancelled = false;
     async function boot() {
-      const user = await getCurrentUser(); 
+      const user = await getCurrentUser();
       if (cancelled) return;
       if (!user) return;
 
       setUserId(user.id);
       setUserEmail(user.email);
-   
+
 
       const all = getHabits();
       const userHabits = all?.filter((h) => h.userId === user.id) || [];
@@ -112,7 +112,7 @@ export default function DashboardPage() {
     const next = getHabits() || [];
     setHabits(next.filter((h) => h.userId === userId));
     setFormOpen(false);
-    
+
     setEditing(null);
   }
 
@@ -154,55 +154,24 @@ export default function DashboardPage() {
                   type="button"
                   aria-label="Create habit"
                   className="
-                  fixed bottom-6 left-1/2 -translate-x-1/2
-                  w-14 h-14 rounded-full bg-primary text-white shadow-lg
-                  flex items-center justify-center
-                  hover:opacity-95 active:opacity-90 transition
+    fixed bottom-6 left-1/2 -translate-x-1/2
+    w-14 h-14 rounded-full bg-primary text-white shadow-lg
+    flex items-center justify-center
+    hover:opacity-95 active:opacity-90 transition
 
-                  xl:static xl:translate-x-0
-                  xl:w-auto xl:h-auto xl:px-4 xl:py-2
-                  xl:rounded-full xl:shadow-sm
-                  xl:flex xl:gap-2 xl:items-center
-                ">
-                  <svg
-                    className="xl:hidden"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M12 5V19M5 12H19"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+    xl:static xl:translate-x-0
+    xl:w-auto xl:h-auto xl:px-4 xl:py-2
+    xl:rounded-full xl:shadow-sm
+    xl:flex xl:gap-2 xl:items-center
+  "
+                >
+                  <AddIcon className="xl:hidden" width="24" height="24" />
 
-                  {/* Desktop label */}
                   <span className="hidden xl:inline text-sm font-medium">
                     Add
                   </span>
 
-
-                  <svg
-                    className="hidden xl:block"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M12 5V19M5 12H19"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <AddIcon className="hidden xl:block" width="18" height="18" />
                 </button>
               </div>
 
