@@ -23,7 +23,6 @@ vi.mock('@/src/lib/auth', () => ({
   logout: vi.fn(),
 }));
 
-// ─── mock seedHabits so it never auto-populates test storage ─────────────────
 vi.mock('@/src/lib/storage', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/src/lib/storage')>();
   return {
@@ -40,7 +39,7 @@ import {
 } from '../../src/lib/storage';
 import { STORAGE_KEY } from '../../src/lib/constants';
 
-// ─── helpers ──────────────────────────────────────────────────────────────────
+
 
 const TODAY = new Date().toISOString().split('T')[0];
 
@@ -69,7 +68,6 @@ function seedHabit(overrides = {}) {
   return habit;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 
 describe('habit form', () => {
   beforeEach(() => {
@@ -83,24 +81,24 @@ describe('habit form', () => {
     const user = userEvent.setup();
     render(<DashboardPage />);
 
-    // Wait for dashboard to boot and render
+
     await waitFor(() => {
       expect(screen.getByTestId('dashboard-page')).toBeInTheDocument();
     });
 
-    // Open the create habit form
+
     await user.click(screen.getByTestId('create-habit-button'));
 
-    // Form must be visible
+
     await waitFor(() => {
       expect(screen.getByTestId('habit-form')).toBeInTheDocument();
     });
 
-    // The save button is disabled when name is empty — verify and attempt submit
+ 
     const saveButton = screen.getByTestId('habit-save-button');
     expect(saveButton).toBeDisabled();
 
-    // No habit should have been saved
+    
     expect(getHabits() ?? []).toHaveLength(0);
   });
 
@@ -126,12 +124,12 @@ describe('habit form', () => {
 
     await user.click(screen.getByTestId('habit-save-button'));
 
-    // The habit card must appear using its slug-based test id
+  
     await waitFor(() => {
       expect(screen.getByTestId('habit-card-drink-water')).toBeInTheDocument();
     });
 
-    // The habit must be persisted in localStorage via storage lib
+   
     const habits = getHabits() ?? [];
     expect(habits.some((h: any) => h.name === 'Drink Water')).toBe(true);
     const created = habits.find((h: any) => h.name === 'Drink Water');
@@ -142,7 +140,7 @@ describe('habit form', () => {
   it('edits an existing habit and preserves immutable fields', async () => {
     const user = userEvent.setup();
 
-    // Pre-seed a habit with known immutable values
+
     const original = seedHabit({
       id: 'habit-fixed-id',
       createdAt: '2024-01-01T00:00:00.000Z',
@@ -162,7 +160,7 @@ describe('habit form', () => {
       expect(screen.getByTestId('habit-form')).toBeInTheDocument();
     });
 
-    // Clear the name and type a new one
+  
     const nameInput = screen.getByTestId('habit-name-input');
     await user.clear(nameInput);
     await user.type(nameInput, 'Hydrate');
@@ -173,7 +171,7 @@ describe('habit form', () => {
       expect(screen.getByTestId('habit-card-hydrate')).toBeInTheDocument();
     });
 
-    // Verify immutable fields were not changed
+
     const habits = getHabits() ?? [];
     const updated = habits.find((h: any) => h.name === 'Hydrate');
     expect(updated).toBeDefined();
@@ -196,20 +194,19 @@ it('deletes a habit only after explicit confirmation', async () => {
     expect(screen.getByTestId('habit-card-drink-water')).toBeInTheDocument();
   });
 
-  // STEP 1: click trash icon (opens confirm UI)
+
   await user.click(screen.getByTestId('habit-delete-drink-water'));
 
-  // STEP 2: confirm UI appears (this replaces delete button)
+ 
   await waitFor(() => {
     expect(screen.getByTestId('confirm-delete-button')).toBeInTheDocument();
   });
 
-  // STEP 3: cancel first? (if you want cancel flow)
-  // or directly confirm delete:
+
 
   await user.click(screen.getByTestId('confirm-delete-button'));
 
-  // STEP 4: wait for removal
+
   await waitFor(() => {
     expect(
       screen.queryByTestId('habit-card-drink-water')
@@ -234,14 +231,13 @@ it('deletes a habit only after explicit confirmation', async () => {
     // Streak should start at 0
     expect(screen.getByTestId('habit-streak-drink-water')).toHaveTextContent('0');
 
-    // Mark as complete for today
+
     await user.click(screen.getByTestId('habit-complete-drink-water'));
 
     await waitFor(() => {
       expect(screen.getByTestId('habit-streak-drink-water')).toHaveTextContent('1');
     });
 
-    // Verify completion was persisted
     const habits = getHabits() ?? [];
     expect(habits[0].completions).toContain(TODAY);
 
