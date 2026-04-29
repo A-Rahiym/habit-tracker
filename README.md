@@ -8,85 +8,101 @@ Stack: Next.js App Router, React, TypeScript, Tailwind CSS, localStorage,
 Playwright, Vitest, React Testing Library. Hosted on Netlify.
 
 ## Setup Instructions
-- Prerequisites: Node.js 18+, npm
-- Clone the repo
+Prerequisites: Node.js 18+, npm
 
 ```bash
+git clone <repo-url>
+cd habit-tracker
 npm install
 ```
 
 ## Run Instructions
-- Development:
 
+Development:
 ```bash
 npm run dev
 ```
 
-- Production build:
-
+Production build:
 ```bash
 npm run build
 npm run start
 ```
 
-- Note: service worker only registers in production, not in development
+Note: the service worker only registers in production or when
+NEXT_PUBLIC_E2E=true is set. It does not run during normal development
+to avoid stale cache issues.
 
 ## Test Instructions
-- All tests:
 
+All tests:
 ```bash
 npm test
 ```
 
-- Unit only:
-
+Unit tests only (also generates coverage report):
 ```bash
 npm run test:unit
 ```
 
-- Integration only:
-
+Integration tests only:
 ```bash
 npm run test:integration
 ```
 
-- E2E only:
-
+E2E tests only (Playwright starts the server automatically):
 ```bash
 npm run test:e2e
 ```
 
-- Note: requires dev server running on localhost:3000
-
 ## Local Persistence Structure
 localStorage uses three keys:
-- `habit-tracker-users`: array of {id, email, password, createdAt}
-- `habit-tracker-session`: {userId, email} or null
-- `habit-tracker-habits`: array of {id, userId, name, description, frequency, createdAt, completions}
-completions is an array of YYYY-MM-DD strings — one per day completed.
-Habits are filtered by userId so each user only sees their own data.
+
+- `habit-tracker-users` — array of `{id, email, password, createdAt}`
+- `habit-tracker-session` — `{userId, email}` or `null`
+- `habit-tracker-habits` — array of `{id, userId, name, description, frequency, createdAt, completions}`
+
+`completions` is an array of YYYY-MM-DD strings, one per completed day.
+Habits are filtered by `userId` so each user only sees their own data.
 
 ## PWA Support
-- `public/manifest.json` defines name, icons, theme color, display mode
-- `public/sw.js` is the service worker, registered only in production
-- Navigation requests: network-first, falls back to cached shell offline
-- Static assets (JS, CSS, images): cache-first
-- `public/icons/icon-192.png` and `public/icons/icon-512.png` are cached on first request through the static-asset path
+- `public/manifest.json` defines name, icons, theme color, and display mode
+- `public/sw.js` is the service worker — registered in production and during E2E tests
+- All app routes (`/`, `/login`, `/signup`, `/dashboard`) and the manifest
+  are precached at SW install time
+- Navigation requests use network-first strategy, falling back to the
+  cached route or `/` when offline
+- Static assets (JS, CSS, images, fonts) use cache-first strategy
+- Icons at `public/icons/icon-192.png` and `public/icons/icon-512.png`
 
 ## Trade-offs and Limitations
-- Passwords stored as plain text in localStorage — no hashing
+- Passwords are stored as plain text in localStorage — no hashing
 - No server-side auth — data is readable via DevTools
 - localStorage is device-specific — no cross-device sync
-- ~5MB storage limit
-- Offline support not testable in development — SW only active in production
+- localStorage has a ~5MB limit
+- Service worker is disabled in development to prevent stale cache issues
+- No real-time updates — all state is read from localStorage on each action
+
+## How Implementation Maps to Requirements
+| Requirement | Implementation |
+|---|---|
+| Sign up / log in / log out | `src/components/auth/SignupForm.tsx`, `LoginForm.tsx`, auth functions in `src/lib/auth.ts` |
+| Create / edit / delete habits | `src/app/dashboard/page.tsx` + `src/components/habits/HabitCard.tsx` |
+| Mark complete / unmark | `toggleHabitCompletion` in `src/lib/habits.ts` |
+| Streak tracking | `calculateCurrentStreak` in `src/lib/streaks.ts` |
+| localStorage persistence | `src/lib/storage.ts` with keys defined in `src/lib/constants.ts` |
+| Protected dashboard route | `src/components/shared/ProtectedRoute.tsx` |
+| Splash screen with redirect | `src/app/page.tsx` |
+| PWA installable | `public/manifest.json` + `public/sw.js` |
+| Mobile-first layout | Tailwind CSS with base mobile styles, `md:` and `xl:` breakpoints |
 
 ## Test File Map
 | Test File | Type | Behavior Verified |
-| --- | --- | --- |
-| `test/unit/slug.test.ts` | Unit | getHabitSlug slug generation |
-| `test/unit/validator.test.ts` | Unit | validateHabitName rules |
-| `test/unit/streaks.test.ts` | Unit | calculateCurrentStreak logic |
-| `test/unit/habit.test.ts` | Unit | toggleHabitCompletion immutability and correctness |
-| `test/integration/auth-flow.test.tsx` | Integration | Signup, login, duplicate and invalid credential errors |
-| `test/integration/habit-form.test.tsx` | Integration | Create, edit, delete confirmation, toggle completion, streak update |
-| `test/e2e/app.spec.ts` | E2E | Not currently checked in; Playwright dependency is installed but no e2e spec is present in the repo |
+|---|---|---|
+| `tests/unit/slug.test.ts` | Unit | `getHabitSlug` converts habit names to URL-safe slugs |
+| `tests/unit/validators.test.ts` | Unit | `validateHabitName` enforces required and max-length rules |
+| `tests/unit/streaks.test.ts` | Unit | `calculateCurrentStreak` counts consecutive completion days correctly |
+| `tests/unit/habits.test.ts` | Unit | `toggleHabitCompletion` adds/removes dates without mutation or duplicates |
+| `tests/integration/auth-flow.test.tsx` | Integration | Signup creates session, login validates credentials, duplicate and invalid error messages |
+| `tests/integration/habit-form.test.tsx` | Integration | Create, edit, delete with confirmation gate, toggle completion, streak display update |
+| `tests/e2e/app.spec.ts` | E2E | Splash redirect, auth routing guards, signup, login with user isolation, habit CRUD, persistence after reload, logout, offline PWA shell 
