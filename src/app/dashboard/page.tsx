@@ -116,7 +116,7 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <div data-testid="dashboard-page" className="h-dvh flex flex-col bg-background text-text-primary px-4 p-2 md:px-8 md:py-2 overflow-hidden">
-      
+
         <div className="w-full mx-auto max-w-180 xl:max-w-260 flex flex-col flex-1 overflow-hidden">
           <div className="rounded-3xl border border-primary/20 bg-primary px-3 py-3 md:px-6 md:py-6 shadow-sm mb-3">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                   <AddIcon className="hidden xl:block" width="18" height="18" />
                 </button>
               </div>
-                <div className="font-semibold text-2xl m-1">Habits</div>
+              <div className="font-semibold text-2xl m-1">Habits</div>
               <div className="flex-1 overflow-y-auto pb-8">
                 <HabitList
                   habits={habits}

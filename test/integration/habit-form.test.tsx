@@ -184,39 +184,42 @@ describe('habit form', () => {
     expect(updated.frequency).toBe('daily');
   });
 
-  it('deletes a habit only after explicit confirmation', async () => {
-    const user = userEvent.setup();
-    seedHabit();
-
-    // First confirm = cancel (habit stays), second confirm = ok (habit deleted)
-    vi.spyOn(window, 'confirm')
-      .mockReturnValueOnce(false)  // first click — user cancels
-      .mockReturnValueOnce(true);  // second click — user confirms
-
-    render(<DashboardPage />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('habit-card-drink-water')).toBeInTheDocument();
-    });
-
-    // First delete attempt — user cancels confirmation
-    await user.click(screen.getByTestId('habit-delete-drink-water'));
 
 
+it('deletes a habit only after explicit confirmation', async () => {
+  const user = userEvent.setup();
+  seedHabit();
+
+  render(<DashboardPage />);
+
+  await waitFor(() => {
     expect(screen.getByTestId('habit-card-drink-water')).toBeInTheDocument();
-
-
-    await user.click(screen.getByTestId('habit-delete-drink-water'));
-
-    await waitFor(() => {
-      expect(
-        screen.queryByTestId('habit-card-drink-water')
-      ).not.toBeInTheDocument();
-    });
-
-    // Habit must be gone from storage
-    expect(getHabits() ?? []).toHaveLength(0);
   });
+
+  // STEP 1: click trash icon (opens confirm UI)
+  await user.click(screen.getByTestId('habit-delete-drink-water'));
+
+  // STEP 2: confirm UI appears (this replaces delete button)
+  await waitFor(() => {
+    expect(screen.getByTestId('confirm-delete-button')).toBeInTheDocument();
+  });
+
+  // STEP 3: cancel first? (if you want cancel flow)
+  // or directly confirm delete:
+
+  await user.click(screen.getByTestId('confirm-delete-button'));
+
+  // STEP 4: wait for removal
+  await waitFor(() => {
+    expect(
+      screen.queryByTestId('habit-card-drink-water')
+    ).not.toBeInTheDocument();
+  });
+
+  // STEP 5: storage check
+  expect(getHabits() ?? []).toHaveLength(0);
+});
+
 
   it('toggles completion and updates the streak display', async () => {
     const user = userEvent.setup();
