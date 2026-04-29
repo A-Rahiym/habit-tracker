@@ -61,7 +61,7 @@ npm run test:e2e
 ## Local Persistence Structure
 localStorage uses three keys:
 - `habit-tracker-users`: array of {id, email, password, createdAt}
-- `habit-tracker-sessions`: {userId, email} or null
+- `habit-tracker-session`: {userId, email} or null
 - `habit-tracker-habits`: array of {id, userId, name, description, frequency, createdAt, completions}
 completions is an array of YYYY-MM-DD strings — one per day completed.
 Habits are filtered by userId so each user only sees their own data.
