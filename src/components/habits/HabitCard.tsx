@@ -87,7 +87,7 @@ export function HabitCard({
               type="button"
               aria-label="Edit habit"
             >
-              <EditIcon />
+              <EditIcon width={16} height={16} />
             </button>
 
             <button
@@ -97,7 +97,7 @@ export function HabitCard({
               type="button"
               aria-label="Delete habit"
             >
-              <TrashIcon />
+              <TrashIcon width={16} height={16} />
             </button>
           </div>
         )}
