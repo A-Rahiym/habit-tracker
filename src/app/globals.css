@@ -12,11 +12,7 @@
   --danger: #ef4444;
   --success: #2563eb;
 }
-
 @theme inline {
-
-
-
   --color-primary: var(--primary);
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -28,7 +24,6 @@
   --color-danger: var(--danger);
   --color-success: var(--success);
 }
-
 body {
   background: var(--background);
   color: var(--text-primary);

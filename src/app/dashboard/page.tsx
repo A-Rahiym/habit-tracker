@@ -30,7 +30,7 @@ export default function DashboardPage() {
   useEffect(() => {
     let cancelled = false;
     async function boot() {
-      const user = await getCurrentUser();
+      const user = await getCurrentUser(); 
       if (cancelled) return;
       if (!user) return;
 
@@ -40,6 +40,7 @@ export default function DashboardPage() {
 
       const all = getHabits();
       const userHabits = all?.filter((h) => h.userId === user.id) || [];
+      console.log(`Loaded ${userHabits.length} habits for user ${user.email} (${user.id})`);
       setHabits(userHabits);
     }
     boot();
@@ -75,11 +76,10 @@ export default function DashboardPage() {
   }
 
   function confirmDelete(h: Habit) {
-    const ok = window.confirm(`Delete "${h.name}"?`);
-    if (!ok) return;
     deleteHabit(h.id);
     const all = getHabits() || [];
     setHabits(all.filter((x) => x.userId === userId));
+    console.log(`Deleted habit ${h.name} (${h.id})`);
   }
 
   function saveDraft(draft: {
@@ -112,6 +112,7 @@ export default function DashboardPage() {
     const next = getHabits() || [];
     setHabits(next.filter((h) => h.userId === userId));
     setFormOpen(false);
+    
     setEditing(null);
   }
 

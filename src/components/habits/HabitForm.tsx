@@ -46,6 +46,10 @@ export function HabitForm({
       description: description.trim(),
       frequency,
     });
+    setName("");
+    setDescription("");
+    setFrequency("daily");
+
   }
 
   return (
@@ -75,49 +79,49 @@ export function HabitForm({
         </div>
 
         <form onSubmit={submit} className="space-y-3">
-            <div className="space-y-1">
-              <label htmlFor="habit-name-input" className="text-sm font-medium text-text-primary">
-                Habit Name
-              </label>
-              <input
-                data-testid="habit-name-input"
-                id="habit-name-input"
-                className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
-                placeholder="Habit name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoFocus
-              />
-            </div>
-            <div className="space-y-1">
-              <label htmlFor="habit-description-input" className="text-sm font-medium text-text-primary">
-                Description (optional)
-              </label>
-          <input
-            data-testid="habit-description-input"
-            className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
-            placeholder="Description (optional)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <div className="space-y-1">
+            <label htmlFor="habit-name-input" className="text-sm font-medium text-text-primary">
+              Habit Name
+            </label>
+            <input
+              data-testid="habit-name-input"
+              id="habit-name-input"
+              className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
+              placeholder="Habit name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoFocus
+            />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="habit-description-input" className="text-sm font-medium text-text-primary">
+              Description (optional)
+            </label>
+            <input
+              data-testid="habit-description-input"
+              className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
+              placeholder="Description (optional)"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
 
           <div className="space-y-1">
             <label htmlFor="habit-frequency-select" className="text-sm font-medium text-text-primary">
               Frequency
             </label>
-          <select
-            data-testid="habit-frequency-select"
-            className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
-            value={frequency}
-            onChange={(e) =>
-              setFrequency(e.target.value as Draft["frequency"])
-            }
-          >
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
+            <select
+              data-testid="habit-frequency-select"
+              className="w-full rounded-full bg-muted-surface border border-border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/25"
+              value={frequency}
+              onChange={(e) =>
+                setFrequency(e.target.value as Draft["frequency"])
+              }
+            >
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
           </div>
 
           <button
