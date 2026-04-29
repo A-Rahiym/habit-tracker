@@ -17,7 +17,6 @@ export default function DashboardPage() {
 
   const [habits, setHabits] = useState<Habit[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string>("");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Habit | null>(null);
 
@@ -35,8 +34,6 @@ export default function DashboardPage() {
       if (!user) return;
 
       setUserId(user.id);
-      setUserEmail(user.email);
-
 
       const all = getHabits();
       const userHabits = all?.filter((h) => h.userId === user.id) || [];
@@ -121,12 +118,12 @@ export default function DashboardPage() {
       <div data-testid="dashboard-page" className="min-h-screen bg-background text-text-primary px-4 py-6 md:px-8 md:py-8">
         <div className="w-full mx-auto max-w-180 xl:max-w-260">
           <div className="rounded-3xl border border-primary/20 bg-primary px-5 py-5 md:px-6 md:py-6 shadow-sm mb-5">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="min-w-0">
                 <div className="text-sm font-medium text-white">
                   Hello 👋
                 </div>
-                <div className="mt-1 text-2xl font-semibold tracking-tight text-white truncate">
+                <div className="mt-1 text-xl font-semibold tracking-tight text-white truncate md:text-2xl">
                   Welcome back
                 </div>
                 <div className="mt-2 text-sm text-white max-w-md italic">
@@ -143,6 +140,32 @@ export default function DashboardPage() {
                 Logout
               </button>
             </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-2xl bg-white/12 px-4 py-3 text-white backdrop-blur-sm">
+                <div className="text-xs font-medium uppercase tracking-[0.2em] text-white/75">
+                  Total streak
+                </div>
+                <div className="mt-1 text-3xl font-semibold tracking-tight">
+                  {totalStreak}
+                </div>
+                <div className="mt-1 text-sm text-white/80">
+                  Combined streak across all habits.
+                </div>
+              </div>
+
+              <div className="rounded-2xl bg-white/12 px-4 py-3 text-white backdrop-blur-sm">
+                <div className="text-xs font-medium uppercase tracking-[0.2em] text-white/75">
+                  Summary
+                </div>
+                <div className="mt-1 text-sm text-white/90">
+                  {habits.length} habit{habits.length === 1 ? "" : "s"} total
+                </div>
+                <div className="mt-1 text-sm text-white/80">
+                  Tap the circle to mark today complete.
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-4 xl:flex-row xl:items-start">
@@ -154,16 +177,16 @@ export default function DashboardPage() {
                   type="button"
                   aria-label="Create habit"
                   className="
-    fixed bottom-6 left-1/2 -translate-x-1/2
-    w-14 h-14 rounded-full bg-primary text-white shadow-lg
-    flex items-center justify-center
-    hover:opacity-95 active:opacity-90 transition
+                  fixed bottom-6 left-1/2 -translate-x-1/2
+                  w-14 h-14 rounded-full bg-primary text-white shadow-lg
+                  flex items-center justify-center
+                  hover:opacity-95 active:opacity-90 transition
 
-    xl:static xl:translate-x-0
-    xl:w-auto xl:h-auto xl:px-4 xl:py-2
-    xl:rounded-full xl:shadow-sm
-    xl:flex xl:gap-2 xl:items-center
-  "
+                  xl:static xl:translate-x-0
+                  xl:w-auto xl:h-auto xl:px-4 xl:py-2
+                  xl:rounded-full xl:shadow-sm
+                  xl:flex xl:gap-2 xl:items-center
+                "
                 >
                   <AddIcon className="xl:hidden" width="24" height="24" />
 
@@ -182,34 +205,6 @@ export default function DashboardPage() {
                 onEdit={openEdit}
                 onDelete={confirmDelete}
               />
-            </div>
-
-            <div className="xl:w-90">
-              <div className="rounded-2xl bg-surface border border-border p-5 shadow-sm space-y-4">
-                <div>
-                  <div className="text-sm font-medium text-text-secondary">
-                    Total streak 🔥
-                  </div>
-                  <div className="mt-1 text-3xl font-semibold tracking-tight">
-                    {totalStreak}
-                  </div>
-                  <div className="mt-1 text-sm text-text-secondary">
-                    Combined streak across all habits.
-                  </div>
-                </div>
-
-                <div className="h-px bg-border" />
-
-                <div>
-                  <div className="font-semibold mb-1">Summary</div>
-                  <div className="text-sm text-text-secondary">
-                    {habits.length} habit{habits.length === 1 ? "" : "s"} total
-                  </div>
-                  <div className="mt-3 text-sm text-text-secondary">
-                    Tap the circle to mark today complete.
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
