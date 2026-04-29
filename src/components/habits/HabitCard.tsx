@@ -48,7 +48,7 @@ export function HabitCard({
           data-testid={`habit-complete-${slug}`}
           onClick={() => onToggle(habit)}
           className={[
-            "shrink-0 rounded-full w-10 h-10 flex items-center justify-center border transition",
+            "shrink-0 rounded-full w-6 h-6 flex items-center justify-center border-2 transition",
             completedToday
               ? "bg-primary border-primary text-white"
               : "bg-surface border-border text-text-secondary",

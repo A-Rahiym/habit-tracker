@@ -118,7 +118,7 @@ export default function DashboardPage() {
       <div data-testid="dashboard-page" className="h-dvh flex flex-col bg-background text-text-primary px-4 p-2 md:px-8 md:py-2 overflow-hidden">
       
         <div className="w-full mx-auto max-w-180 xl:max-w-260 flex flex-col flex-1 overflow-hidden">
-          <div className="rounded-3xl border border-primary/20 bg-primary px-5 py-5 md:px-6 md:py-6 shadow-sm mb-5">
+          <div className="rounded-3xl border border-primary/20 bg-primary px-3 py-3 md:px-6 md:py-6 shadow-sm mb-3">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-start justify-between w-full">
                 <div className="min-w-0">
@@ -145,7 +145,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div className="rounded-2xl bg-white/12 px-4 py-3 text-white backdrop-blur-sm">
+              <div className="rounded-2xl bg-white/12 px-4 py-2 text-white backdrop-blur-sm">
                 <div className="text-xs font-medium uppercase tracking-[0.2em] text-white/75">
                   Total streak
                 </div>
@@ -157,7 +157,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-white/12 px-4 py-3 text-white backdrop-blur-sm">
+              <div className="rounded-2xl bg-white/12 px-4 py-1 text-white backdrop-blur-sm">
                 <div className="text-xs font-medium uppercase tracking-[0.2em] text-white/75">
                   Summary
                 </div>
@@ -173,14 +173,15 @@ export default function DashboardPage() {
 
           <div className="flex flex-col gap-4 xl:flex-row xl:items-start flex-1 overflow-hidden">
             <div className="xl:flex-1 flex flex-col overflow-hidden">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-1">
                 <button
                   data-testid="create-habit-button"
                   onClick={openCreate}
                   type="button"
                   aria-label="Create habit"
+
                   className="
-                  fixed bottom-6 left-1/2 -translate-x-1/2
+                  fixed bottom-6 left-1/2 -translate-x-1/2 z-50
                   w-14 h-14 rounded-full bg-primary text-white shadow-lg
                   flex items-center justify-center
                   hover:opacity-95 active:opacity-90 transition
@@ -200,7 +201,7 @@ export default function DashboardPage() {
                   <AddIcon className="hidden xl:block" width="18" height="18" />
                 </button>
               </div>
-                <div className="font-semibold text-2xl m-2">Habits</div>
+                <div className="font-semibold text-2xl m-1">Habits</div>
               <div className="flex-1 overflow-y-auto pb-8">
                 <HabitList
                   habits={habits}
