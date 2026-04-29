@@ -1,8 +1,6 @@
 const CACHE_NAME = "habit-tracker-static-v2";
 
-const PRECACHE_URLS = [
-  "/manifest.json",
-];
+const PRECACHE_URLS = ["/manifest.json", "/"];
 
 const STATIC_FILE_PATTERN = /\.(?:js|css|woff2?|png|jpg|jpeg|svg|ico|webp|avif)$/i;
 
@@ -39,7 +37,16 @@ self.addEventListener("fetch", (event) => {
 
   if (isNavigation) {
     event.respondWith(
-      fetch(request).catch(() => caches.match("/"))
+      fetch(request)
+        .then((response) => {
+          // cache successful navigation responses for offline use
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request).then((cached) => cached ?? caches.match("/")))
     );
     return;
   }
@@ -48,7 +55,6 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;
-
         return fetch(request).then((response) => {
           if (response.ok) {
             const clone = response.clone();
